@@ -56,6 +56,7 @@ load_csv_safely <- function(local_path, remote_rel = NULL, verbose = FALSE) {
 sag_rel  <- "data/REGION_SAG_WGS84.qs"
 feux_rel <- "data/feux_2023_simpl.qs"
 csv_rel  <- "data/feux_2023_table.csv"
+bg_rel   <- "data/feuxqc_2023_bg.qs"   # nouveau fond vectoriel
 
 # ===== Helpers génériques =====
 canon_nofeu <- function(x) {
@@ -85,6 +86,7 @@ expand_bbox <- function(bb, frac = 0.03) {
 sag  <- load_qs_safely(local_path = "data/REGION_SAG_WGS84.qs", remote_rel = sag_rel)
 feux <- load_qs_safely(local_path = "data/feux_2023_simpl.qs", remote_rel = feux_rel)
 ftab <- load_csv_safely(local_path = "data/feux_2023_table.csv", remote_rel = csv_rel)
+bg   <- load_qs_safely(local_path = "data/feuxqc_2023_bg.qs",   remote_rel = bg_rel)  # fond vectoriel
 
 if (!is.null(feux)) {
   feux <- feux |>
@@ -199,16 +201,32 @@ server <- function(input, output, session) {
     leaflet(options = leafletOptions(preferCanvas = TRUE)) |>
       addProviderTiles(providers$Esri.WorldImagery, group = "Imagerie") |>
       addProviderTiles(providers$CartoDB.Positron, group = "Fond neutre") |>
+      addMapPane("pane_bg",    zIndex = 400) |> 
       addMapPane("pane_region", zIndex = 410) |>
       addMapPane("pane_feux",   zIndex = 420) |>
       addMapPane("pane_sel",    zIndex = 430) |>
       fitBounds(-74.5, 48, -69, 53) |>
       addLayersControl(
         baseGroups    = unname(c("Imagerie","Fond neutre")),
-        overlayGroups = unname(c("Feux (tous)", "Feu sélectionné")),
+        overlayGroups = unname(c("Fond QC 2023", "Feux (tous)", "Feu sélectionné")),
         options = layersControlOptions(collapsed = FALSE)
       ) |>
       addScaleBar(position = "bottomleft")
+  })
+  
+  # --- Fond QC 2023 (vectoriel) ---
+  observe({
+    req(!is.null(bg))
+    leafletProxy("map") |>
+      clearGroup("Fond QC 2023") |>
+      addPolygons(
+        data        = bg,
+        fillColor   = "#b2182b",
+        fillOpacity = 0.25,
+        stroke      = FALSE,
+        group       = "Fond QC 2023",
+        options     = pathOptions(pane = "pane_bg", interactive = FALSE)
+      )
   })
   
   # --- Région ---
@@ -289,8 +307,6 @@ server <- function(input, output, session) {
     leafletProxy("map") |>
       addPolygons(
         data        = dat,
-        #fillColor   = "#990000",
-        #fillOpacity = opa_sel,
         color       = "#ff9900",
         weight      = 1,
         opacity     = 1,
@@ -325,8 +341,6 @@ server <- function(input, output, session) {
     leafletProxy("map") |>
       addPolygons(
         data        = dat,
-        # fillColor   = "#990000",
-        # fillOpacity = opa_sel,
         color       = "#ff9900",
         weight      = 1,
         opacity     = 1,
