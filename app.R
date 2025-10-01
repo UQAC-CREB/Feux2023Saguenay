@@ -12,7 +12,7 @@ library(scales)   # number(), pseudo_log_trans()
 # CONFIG: lecture depuis GitHub Raw (fallback local)
 # ==============================
 REMOTE_BASE <- "https://raw.githubusercontent.com/hgesdrn/FeuxSaguenay2023/main"  # branche: main
-USE_REMOTE  <- FALSE   # TRUE = tente GitHub d'abord; FALSE = tente local d'abord
+USE_REMOTE  <- TRUE   # TRUE = tente GitHub d'abord; FALSE = tente local d'abord
 
 gh_url <- function(path_rel) paste0(REMOTE_BASE, "/", path_rel)
 
@@ -208,7 +208,7 @@ server <- function(input, output, session) {
       fitBounds(-74.5, 48, -69, 53) |>
       addLayersControl(
         baseGroups    = unname(c("Imagerie","Fond neutre")),
-        overlayGroups = unname(c("Fond QC 2023", "Feux (tous)", "Feu sélectionné")),
+        overlayGroups = unname(c("Fond QC 2023", "Feux SLSJ", "Feu sélectionné")),
         options = layersControlOptions(collapsed = FALSE)
       ) |>
       addScaleBar(position = "bottomleft")
@@ -221,8 +221,8 @@ server <- function(input, output, session) {
       clearGroup("Fond QC 2023") |>
       addPolygons(
         data        = bg,
-        fillColor   = "#b2182b",
-        fillOpacity = 0.25,
+        fillColor   = "#86282E",#   "#b2182b",
+        fillOpacity = 0.75,
         stroke      = FALSE,
         group       = "Fond QC 2023",
         options     = pathOptions(pane = "pane_bg", interactive = FALSE)
