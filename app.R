@@ -159,7 +159,7 @@ ui <- fluidPage(
       box-shadow: 0 0 0 2px rgba(255,153,0,0.15), 0 2px 6px rgba(0,0,0,0.35);
     }
   ")),
-  div("LES FEUX DE FORÊT AU SAGUENAY–LAC-SAINT-JEAN DE 2023", class = "header-title"),
+  div("LES FEUX DE FORÊT EN 2023 AU SAGUENAY–LAC-SAINT-JEAN", class = "header-title"),
   fluidRow(
     column(3,
            div(class = "box-style",
