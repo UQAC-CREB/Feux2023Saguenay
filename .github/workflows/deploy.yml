@@ -10,10 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      CI: "true"
       SHINYAPPS_ACCOUNT: ${{ secrets.SHINYAPPS_ACCOUNT }}
       SHINYAPPS_TOKEN:   ${{ secrets.SHINYAPPS_TOKEN }}
       SHINYAPPS_SECRET:  ${{ secrets.SHINYAPPS_SECRET }}
       SHINYAPPS_APPNAME: ${{ vars.SHINYAPPS_APPNAME }}
+
 
     steps:
       - name: Checkout repository
