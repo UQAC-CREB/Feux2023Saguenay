@@ -11,6 +11,7 @@ jobs:
 
     env:
       CI: "true"
+      RSPM: "https://cloud.r-project.org"
       SHINYAPPS_ACCOUNT: ${{ secrets.SHINYAPPS_ACCOUNT }}
       SHINYAPPS_TOKEN:   ${{ secrets.SHINYAPPS_TOKEN }}
       SHINYAPPS_SECRET:  ${{ secrets.SHINYAPPS_SECRET }}
@@ -33,9 +34,10 @@ jobs:
             libgdal-dev \
             libgeos-dev \
             libproj-dev \
-            libudunits2-dev
+            libudunits2-dev \
+            libcurl4-openssl-dev \
+            libssl-dev
 
-      # Installe les deps R depuis DESCRIPTION (Imports) + rsconnect
       - name: Install R dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
