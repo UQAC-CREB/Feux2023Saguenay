@@ -1,6 +1,7 @@
-^renv\.lock$
-^renv/
-^\.github/
-^rsconnect/
-^\.git/
-^\.Rproj\.user/
+renv.lock
+renv/
+.Rprofile
+.github/
+rsconnect/
+.git/
+.Rproj.user/

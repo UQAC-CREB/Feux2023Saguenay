@@ -11,8 +11,8 @@ library(scales)   # number(), pseudo_log_trans()
 # ==============================
 # CONFIG: lecture depuis GitHub Raw (fallback local)
 # ==============================
-REMOTE_BASE <- "https://raw.githubusercontent.com/hgesdrn/FeuxSaguenay2023/main"  # branche: main
-USE_REMOTE  <- TRUE   # TRUE = tente GitHub d'abord; FALSE = tente local d'abord
+REMOTE_BASE <- "https://raw.githubusercontent.com/UQAC-CREB/Feux2023Saguenay/main"
+USE_REMOTE  <- TRUE
 
 gh_url <- function(path_rel) paste0(REMOTE_BASE, "/", path_rel)
 
