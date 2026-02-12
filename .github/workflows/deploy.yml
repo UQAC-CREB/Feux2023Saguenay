@@ -2,7 +2,7 @@ name: Deploy to shinyapps.io
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 jobs:
@@ -16,7 +16,6 @@ jobs:
       SHINYAPPS_SECRET:  ${{ secrets.SHINYAPPS_SECRET }}
       SHINYAPPS_APPNAME: ${{ vars.SHINYAPPS_APPNAME }}
 
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -27,7 +26,7 @@ jobs:
       - name: Setup Pandoc
         uses: r-lib/actions/setup-pandoc@v2
 
-      - name: Install system dependencies (sf/terra)
+      - name: Install system dependencies (sf)
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -36,9 +35,15 @@ jobs:
             libproj-dev \
             libudunits2-dev
 
-      - name: Install rsconnect
-        run: |
-          Rscript -e 'install.packages("rsconnect", repos="https://cloud.r-project.org")'
+      # Installe les deps R depuis DESCRIPTION (Imports) + rsconnect
+      - name: Install R dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: |
+            any::rsconnect
+          needs: |
+            website
+            dev
 
       - name: Deploy to shinyapps.io
         run: |
