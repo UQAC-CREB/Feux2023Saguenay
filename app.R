@@ -1,4 +1,11 @@
 # app.R
+
+if (!requireNamespace("qs", quietly = TRUE)) {
+  install.packages("qs", repos = "https://cloud.r-project.org")
+}
+library(qs)
+
+
 library(shiny)
 library(leaflet)
 library(sf)
