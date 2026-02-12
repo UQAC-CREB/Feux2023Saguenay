@@ -5,6 +5,6 @@ account: creb-uqac
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 16660274
-bundleId: 11573121
+bundleId: 11573476
 url: https://creb-uqac.shinyapps.io/Feux2023Saguenay/
 version: 1
